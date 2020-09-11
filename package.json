@@ -1,0 +1,50 @@
+{
+  "name": "xibit-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "babel:build": "babel src --out-dir dist",
+    "build": "npm run clean && npm run babel:build",
+    "clean": "rm -rf dist",
+    "lint": "eslint src",
+    "lint:fix": "eslint src --fix",
+    "start": "npm run build && node dist/index.js",
+    "start:dev": "nodemon -e js --watch src --exec \"npm run start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aghafoor94/xibit-server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aghafoor94/xibit-server/issues"
+  },
+  "homepage": "https://github.com/aghafoor94/xibit-server#readme",
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint"
+    }
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.11.6",
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-transform-runtime": "^7.11.5",
+    "@babel/preset-env": "^7.11.5",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.3.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "bcrypt": "^5.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.5",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  }
+}
