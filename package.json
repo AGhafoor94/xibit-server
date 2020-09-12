@@ -10,7 +10,7 @@
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
     "start": "npm run build && node dist/server.js",
-    "seed": "node src/seed/seedXibit.js && node src/seed/seedUser.js",
+    "seed": "node src/seed/seedXibit.js && node src/seed/seedUser.js&& node src/seed/seedPlan.js",
     "start:dev": "nodemon -e js --watch src --exec \"npm run start\""
   },
   "repository": {
