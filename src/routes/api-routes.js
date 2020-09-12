@@ -38,7 +38,13 @@ const updatePlan = (req, res) => {
 };
 
 const deletePlans = (req, res) => {
-  res.send('Delete Plans');
+  try {
+    const { id } = req.params;
+    const data = db.Plan.deleteOne(id);
+    res.status(202).json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 router.post('/xibits', getXibits);
