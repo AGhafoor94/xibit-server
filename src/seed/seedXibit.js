@@ -29,8 +29,8 @@ const seed = [
   },
 ];
 
-db.Xibits.deleteMany({}).then(() => {
-  db.Xibits.collection
+db.Xibit.deleteMany({}).then(() => {
+  db.Xibit.collection
     .insertMany(seed)
     .then(() => {
       process.exit(0);

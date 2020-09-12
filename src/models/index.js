@@ -1,9 +1,9 @@
-const Xibits = require('./xibits');
+const Xibit = require('./xibits');
 const User = require('./user');
-const Plans = require('./plans');
+const Plan = require('./plans');
 
 module.exports = {
-  Xibits,
+  Xibit,
   User,
-  Plans,
+  Plan,
 };

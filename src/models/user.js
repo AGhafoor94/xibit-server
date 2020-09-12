@@ -26,7 +26,7 @@ schema.pre('save', (next) => {
     bycrpt.hash(user.password, salt, (error, hash) => {
       if (error) return next(error);
       user.password = hash;
-      return next();
+      next();
     });
   });
 });
@@ -34,7 +34,7 @@ schema.pre('save', (next) => {
 schema.methods.comparePassword = (candidatePassword, cb) => {
   bycrpt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return cb(err);
-    return cb(null, isMatch);
+    cb(null, isMatch);
   });
 };
 const User = mongoose.model('User', schema);
