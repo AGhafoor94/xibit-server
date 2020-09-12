@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const db = require('../models');
+import db from '../models';
 
-const { DB_URI, MONGOOSE_OPTIONS } = require('../config/config');
+import { DB_URI, MONGOOSE_OPTIONS } from '../config/config';
 
 mongoose.connect(DB_URI, MONGOOSE_OPTIONS);
 
@@ -32,10 +32,12 @@ const seed = [
 db.Xibit.deleteMany({}).then(() => {
   db.Xibit.collection
     .insertMany(seed)
-    .then(() => {
+    .then((data) => {
+      console.log(`${data.result.n} records inserted!`);
       process.exit(0);
     })
-    .catch(() => {
+    .catch((err) => {
+      console.error(err);
       process.exit(1);
     });
 });

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -43,4 +43,4 @@ const schema = new Schema({
 
 const Xibit = mongoose.model('Xibit', schema);
 
-module.exports = Xibit;
+export default Xibit;
