@@ -10,7 +10,7 @@ const schema = new Schema({
   xibits: [
     {
       type: Schema.Types.ObjectId,
-      ref: xibits,
+      ref: 'xibits',
     },
   ],
   createdAt: {
