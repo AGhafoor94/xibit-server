@@ -33,14 +33,21 @@ const addPlans = (req, res) => {
   res.send('Add Plans');
 };
 
-const updatePlan = (req, res) => {
-  res.send('Update one');
-};
-
-const deletePlans = (req, res) => {
+const updatePlan = async (req, res) => {
   try {
     const { id } = req.params;
-    const data = db.Plan.deleteOne(id);
+    const content = req.body;
+    const data = await db.Plan.findOneAndUpdate(id, content, { upsert: true });
+    res.status(202).json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const deletePlans = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await db.Plan.findByIdAndDelete(id);
     res.status(202).json(data);
   } catch (error) {
     res.status(500).send(error.message);
