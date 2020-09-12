@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 
 const router = express.Router();
 
@@ -12,4 +12,4 @@ const getXibit = (req, res) => {
 router.post('/xibits', getXibits);
 router.get('/xibits/:id', getXibit);
 
-module.exports = router;
+export default router;

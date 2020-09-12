@@ -1,9 +1,7 @@
-const Xibits = require('./xibits');
-const User = require('./user');
-const Plans = require('./plans');
+import Xibit from './xibits';
+import Plan from './plans';
 
-module.exports = {
-  Xibits,
-  User,
-  Plans,
+export default {
+  Xibit,
+  Plan,
 };

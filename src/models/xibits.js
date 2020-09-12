@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -39,13 +39,8 @@ const schema = new Schema({
     type: Date,
     required: true,
   },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
 });
 
-const Xibits = mongoose.model('Xibits', schema);
+const Xibit = mongoose.model('Xibit', schema);
 
-module.exports = Xibits;
+export default Xibit;
