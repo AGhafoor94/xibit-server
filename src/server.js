@@ -1,8 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const apiRoutes = require('./routes/api-routes.js');
 
+const apiRoutes = require('./routes/api-routes.js');
 const { PORT, DB_URI, MONGOOSE_OPTIONS } = require('./config/config');
 
 const app = express();
@@ -10,10 +10,10 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(cors());
+
 // routes
 app.use('/api', apiRoutes);
-
-app.use(cors());
 
 mongoose.connect(DB_URI, MONGOOSE_OPTIONS);
 

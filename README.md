@@ -21,3 +21,7 @@ Api for Xibit App
     - Allow the user to add routes/ show distances referencing the xibits model
   - user :
     - This is for logging in the user
+- Created 3 seed files and script called seed to run them:
+  - seedUser: Adds generic users to the database
+  - seedXibit: Adds generic information to the database relating to the schema
+  - seedPlan: Adds 2

@@ -9,20 +9,12 @@ mongoose.connect(DB_URI, MONGOOSE_OPTIONS);
 const seed = [
   {
     title: 'Plan 1',
-    xibits: [
-      {
-        _id: '5f5cb0b97f1ebf404c109e5e',
-      },
-    ],
+    xibits: [],
     createdAt: Date.now(),
   },
   {
     title: 'Plan 2',
-    xibits: [
-      {
-        _id: '5f5cb0b97f1ebf404c109e5d',
-      },
-    ],
+    xibits: [],
     createdAt: Date.now(),
   },
 ];
