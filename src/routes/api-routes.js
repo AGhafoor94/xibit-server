@@ -29,8 +29,14 @@ const getPlanById = async (req, res) => {
   }
 };
 
-const addPlans = (req, res) => {
-  res.send('Add Plans');
+const addPlans = async (req, res) => {
+  try {
+    const content = req.body;
+    const data = await db.Plan.create(content);
+    res.status(204).json(data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 
 const updatePlan = async (req, res) => {
