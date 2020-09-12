@@ -11,7 +11,7 @@ Api for Xibit App
 
 ## Done
 
-- Installed Axios, bcryptjs, express, express-session, passport and passport-local to try and make a secure password. Installed cors.
+- Installed axios,express and cors.
 - Made changes to the mongoose URI to make it easier to read and use.
 
 - Created 3 models:
