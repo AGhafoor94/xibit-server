@@ -23,10 +23,10 @@ schema.pre('save', (next) => {
 
   bycrpt.genSalt(SALT, (err, salt) => {
     if (err) return next(err);
-    bycrpt.hash(user.password, salt, (err, hash) => {
-      if (err) return next(err);
+    bycrpt.hash(user.password, salt, (error, hash) => {
+      if (error) return next(error);
       user.password = hash;
-      next();
+      return next();
     });
   });
 });
@@ -34,7 +34,7 @@ schema.pre('save', (next) => {
 schema.methods.comparePassword = (candidatePassword, cb) => {
   bycrpt.compare(candidatePassword, this.password, (err, isMatch) => {
     if (err) return cb(err);
-    cb(null, isMatch);
+    return cb(null, isMatch);
   });
 };
 const User = mongoose.model('User', schema);
