@@ -33,7 +33,7 @@ const registerUsers = async (req, res) => {
       await db.User.create({
         firstName: firstName.trim(),
         lastName: lastName.trim(),
-        email,
+        email: email.trim(),
         password: passwordHash,
       });
       res

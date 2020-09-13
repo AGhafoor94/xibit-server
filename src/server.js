@@ -5,6 +5,7 @@ import cors from 'cors';
 import apiRoutes from './routes/api-routes';
 import userAuth from './routes/auth-routes';
 import { PORT, DB_URI, MONGOOSE_OPTIONS } from './config/config';
+import authenticateUser from './utils/authentication';
 
 const app = express();
 
@@ -14,8 +15,9 @@ app.use(express.json());
 app.use(cors());
 
 // routes
-app.use('/api', apiRoutes);
 app.use('/auth', userAuth);
+app.use('/api', apiRoutes);
+app.use(authenticateUser);
 
 mongoose.connect(DB_URI, MONGOOSE_OPTIONS);
 
