@@ -47,7 +47,13 @@ const loginUser = async (req, res) => {
 
   if (email && password) {
     const user = await db.User.findOne({ email });
-    res.status(200).send('login');
+    if (!user) {
+      res.send(404).json({
+        success: false,
+        message: 'User no longer exists',
+      });
+    }
+    res.send('login');
   } else {
     res.send(400).json({
       success: false,
