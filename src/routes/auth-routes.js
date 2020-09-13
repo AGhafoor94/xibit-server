@@ -1,9 +1,11 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-
+import jwt from 'jsonwebtoken';
 import db from '../models';
 
 const router = express.Router();
+
+const AUTH_SECRET = process.env.AUTH_SECRET || 'test-secret';
 
 const validate = (body) => {
   const { firstName, lastName, email, password } = body;
@@ -55,7 +57,15 @@ const loginUser = async (req, res) => {
     } else {
       const validPassword = await bcrypt.compare(password, user.password);
       if (validPassword) {
-        res.send('login');
+        const authToken = await jwt.sign(
+          {
+            id: user._id,
+            email: user.email,
+          },
+          AUTH_SECRET,
+          { expiresIn: '1h' }
+        );
+        res.status(200).json({ success: true, token: authToken });
       } else {
         res.send(401).json({
           success: false,
