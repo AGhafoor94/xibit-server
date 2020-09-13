@@ -18,8 +18,8 @@ const schema = new Schema({
     required: true,
   },
   userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
+    type: String,
+    req: true,
   },
 });
 

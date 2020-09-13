@@ -11,11 +11,13 @@ const seed = [
     title: 'Plan 1',
     xibits: [],
     createdAt: Date.now(),
+    userId: '',
   },
   {
     title: 'Plan 2',
     xibits: [],
     createdAt: Date.now(),
+    userId: '',
   },
 ];
 

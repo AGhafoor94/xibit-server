@@ -16,6 +16,7 @@ const seed = [
     rating: 'good',
     review: 'good',
     mapUrl: 'good',
+    userId: '',
   },
   {
     placeId: 'Place Id 2',
@@ -26,6 +27,7 @@ const seed = [
     rating: 'good',
     review: 'good',
     mapUrl: 'good',
+    userId: '',
   },
 ];
 
