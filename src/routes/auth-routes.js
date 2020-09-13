@@ -59,7 +59,7 @@ const loginUser = async (req, res) => {
       } else {
         res.send(401).json({
           success: false,
-          message: 'Password is not valid',
+          message: 'Failed user authentication',
         });
       }
     }
