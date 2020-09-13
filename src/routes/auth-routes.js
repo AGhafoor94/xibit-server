@@ -2,23 +2,19 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import db from '../models';
+import db from '../models/index';
 import { AUTH_SECRET } from '../config/config';
 
 const router = express.Router();
 
 const validate = (body) => {
-  const {
-    firstName, lastName, email, password,
-  } = body;
+  const { firstName, lastName, email, password } = body;
   const isValid = firstName && lastName && email && password;
   return isValid;
 };
 
 const registerUsers = async (req, res) => {
-  const {
-    firstName, lastName, email, password,
-  } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   if (validate(req.body)) {
     const user = await db.User.findOne({ email });
@@ -67,7 +63,7 @@ const loginUser = async (req, res) => {
             email: user.email,
           },
           AUTH_SECRET,
-          { expiresIn: '1h' },
+          { expiresIn: '1h' }
         );
         res.status(200).json({ success: true, token: authToken });
       } else {

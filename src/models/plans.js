@@ -19,4 +19,5 @@ const schema = new Schema({
   },
 });
 
-export const Plans = mongoose.model('Plans', schema);
+const Plans = mongoose.model('Plans', schema);
+export default Plans;

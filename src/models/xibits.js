@@ -41,4 +41,5 @@ const schema = new Schema({
   },
 });
 
-export const Xibit = mongoose.model('Xibit', schema);
+const Xibit = mongoose.model('Xibit', schema);
+export default Xibit;
