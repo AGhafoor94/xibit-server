@@ -52,8 +52,17 @@ const loginUser = async (req, res) => {
         success: false,
         message: 'User no longer exists',
       });
+    } else {
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (validPassword) {
+        res.send('login');
+      } else {
+        res.send(401).json({
+          success: false,
+          message: 'Password is not valid',
+        });
+      }
     }
-    res.send('login');
   } else {
     res.send(400).json({
       success: false,
