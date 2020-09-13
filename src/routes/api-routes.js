@@ -13,7 +13,6 @@ const getXibit = (req, res) => {
 const getAllPlans = async (req, res) => {
   try {
     const { id } = req.user;
-    console.log(req.user);
     const data = await db.Plan.find({ userId: id });
     res.status(200).json(data);
   } catch (error) {
