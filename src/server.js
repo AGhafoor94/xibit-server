@@ -16,8 +16,9 @@ app.use(cors());
 
 // routes
 app.use('/auth', userAuth);
-app.use(authenticateUser);
-app.use('/api', apiRoutes);
+// Free routes will go here e.g. html routes
+// Authenticate users here
+app.use('/api', authenticateUser, apiRoutes);
 
 mongoose.connect(DB_URI, MONGOOSE_OPTIONS);
 
