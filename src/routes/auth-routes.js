@@ -42,7 +42,19 @@ const registerUsers = async (req, res) => {
   }
 };
 
-const loginUser = (req, res) => {};
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  if (email && password) {
+    const user = await db.User.findOne({ email });
+    res.status(200).send('login');
+  } else {
+    res.send(400).json({
+      success: false,
+      message: 'Login failed, please try again',
+    });
+  }
+};
 
 router.get('/register', registerUsers);
 router.post('/login', loginUser);
