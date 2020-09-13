@@ -2,10 +2,9 @@ import express from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import db from '../models';
+import { AUTH_SECRET } from '../config/config';
 
 const router = express.Router();
-
-const AUTH_SECRET = process.env.AUTH_SECRET || 'test-secret';
 
 const validate = (body) => {
   const { firstName, lastName, email, password } = body;
@@ -81,6 +80,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-router.get('/register', registerUsers);
+router.post('/register', registerUsers);
 router.post('/login', loginUser);
 export default router;
