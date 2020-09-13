@@ -17,8 +17,11 @@ const schema = new Schema({
     type: Date,
     required: true,
   },
+  userId: {
+    type: String,
+    req: true,
+  },
 });
 
 const Plans = mongoose.model('Plans', schema);
-
 export default Plans;

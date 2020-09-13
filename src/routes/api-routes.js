@@ -10,9 +10,10 @@ const getXibit = (req, res) => {
   res.send('Get 1 xibit');
 };
 
-const getAllPlans = async (_, res) => {
+const getAllPlans = async (req, res) => {
   try {
-    const data = await db.Plan.find({});
+    const { id } = req.user;
+    const data = await db.Plan.find({ userId: id });
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({ error: error.message });

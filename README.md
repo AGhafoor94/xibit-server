@@ -30,8 +30,14 @@ Api for Xibit App
   - seedPlan: Adds 2 plans
 
 - Created CRUD routes for Plans:
+
   - Get all plans
   - Get one plan by Id
   - Create plan
   - Update plan
   - Delete plan
+
+- Created 2 Routes for authentication:
+  - One to register
+  - One to login
+- Has checks in place to check if user is already registered

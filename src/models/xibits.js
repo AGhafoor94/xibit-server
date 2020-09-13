@@ -39,8 +39,11 @@ const schema = new Schema({
     type: Date,
     required: true,
   },
+  userId: {
+    type: String,
+    req: true,
+  },
 });
 
 const Xibit = mongoose.model('Xibit', schema);
-
 export default Xibit;
