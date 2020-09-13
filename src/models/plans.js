@@ -17,6 +17,10 @@ const schema = new Schema({
     type: Date,
     required: true,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
 });
 
 const Plans = mongoose.model('Plans', schema);

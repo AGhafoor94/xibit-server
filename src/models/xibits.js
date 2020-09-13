@@ -39,6 +39,10 @@ const schema = new Schema({
     type: Date,
     required: true,
   },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
 });
 
 const Xibit = mongoose.model('Xibit', schema);

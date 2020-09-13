@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import jwt from 'jsonwebtoken';
 
 import User from '../models/index';
@@ -18,7 +19,12 @@ const authenticateUser = async (req, res, next) => {
 
       return next(new Error(['Your user could not be found']));
     }
-
+    req.user = {
+      id: user._id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
     next();
   } catch (error) {
     res.status(401).send({
