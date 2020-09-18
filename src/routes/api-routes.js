@@ -1,14 +1,39 @@
 import express from 'express';
+import axios from 'axios';
 import db from '../models';
 
 const router = express.Router();
 
 const getXibits = (req, res) => {
-  res.send('All xibits');
+  try {
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 };
 const getXibit = (req, res) => {
   res.send('Get 1 xibit');
 };
+const BASE_PLACE_URL =
+  'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=';
+const LOCATION = 'UnitedKingdom';
+const FIELDS =
+  'fields=photos,formatted_address,name,rating,opening_hours&radius=1000';
+const TYPE = 'aquarium';
+const INPUT_TYPE = 'inputtype=textquery';
+const { API_KEY } = process.env.API_KEY;
+
+const getAquariums = async (req, res) => {
+  try {
+    const { data } = axios.get(
+      `${BASE_PLACE_URL}${TYPE}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
+    );
+    res.status(200).json(data.data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const getSafaris = (req, res) => {};
 
 const getAllPlans = async (req, res) => {
   try {
@@ -63,6 +88,8 @@ const deletePlan = async (req, res) => {
 
 router.post('/xibits', getXibits);
 router.get('/xibits/:id', getXibit);
+router.post('/xibits/aquariums', getAquariums);
+router.post('/xibit/safaris', getSafaris);
 
 router.get('/plans', getAllPlans);
 router.get('/plans/:id', getPlanById);
