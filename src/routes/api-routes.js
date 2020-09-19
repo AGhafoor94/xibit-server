@@ -18,14 +18,16 @@ const BASE_PLACE_URL =
 const LOCATION = 'UnitedKingdom';
 const FIELDS =
   'fields=photos,formatted_address,name,rating,opening_hours&radius=1000';
-const TYPE = 'aquarium';
+let type = '';
 const INPUT_TYPE = 'inputtype=textquery';
 const { API_KEY } = process.env.API_KEY;
 
 const getAquariums = async (req, res) => {
+  type = 'aquarium';
+
   try {
     const { data } = axios.get(
-      `${BASE_PLACE_URL}${TYPE}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
+      `${BASE_PLACE_URL}${type}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
     );
     res.status(200).json(data.data);
   } catch (error) {
@@ -33,7 +35,17 @@ const getAquariums = async (req, res) => {
   }
 };
 
-const getSafaris = (req, res) => {};
+const getSafaris = (req, res) => {
+  type = 'zoo';
+  try {
+    const { data } = axios.get(
+      `${BASE_PLACE_URL}${type}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
+    );
+    res.status(200).json(data.data);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
 
 const getAllPlans = async (req, res) => {
   try {
