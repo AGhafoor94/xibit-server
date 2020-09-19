@@ -13,35 +13,37 @@ const getXibits = (req, res) => {
 const getXibit = (req, res) => {
   res.send('Get 1 xibit');
 };
+//https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
+
 const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=';
 const LOCATION = 'UnitedKingdom';
 const FIELDS =
-  'fields=photos,formatted_address,name,rating,opening_hours&radius=1000';
+  '&fields=photos,formatted_address,name,rating,opening_hours&radius=1000';
 let type = '';
-const INPUT_TYPE = 'inputtype=textquery';
-const { API_KEY } = process.env.API_KEY;
+const INPUT_TYPE = '&inputtype=textquery';
+const { API_KEY } = process.env;
 
 const getAquariums = async (req, res) => {
   type = 'aquarium';
 
   try {
-    const { data } = axios.get(
-      `${BASE_PLACE_URL}${type}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
+    const { data } = axios.post(
+      `${BASE_PLACE_URL}${type}&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`
     );
-    res.status(200).json(data.data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
 const getSafaris = (req, res) => {
-  type = 'zoo';
+  type = 'safari';
   try {
-    const { data } = axios.get(
-      `${BASE_PLACE_URL}${type}%20${LOCATION}&${INPUT_TYPE}&${FIELDS}&key=${API_KEY}`
+    const { data } = axios.post(
+      `${BASE_PLACE_URL}${type}&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`
     );
-    res.status(200).json(data.data);
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -99,9 +101,9 @@ const deletePlan = async (req, res) => {
 };
 
 router.post('/xibits', getXibits);
-router.get('/xibits/:id', getXibit);
-router.post('/xibits/aquariums', getAquariums);
-router.post('/xibit/safaris', getSafaris);
+router.get('/xibit/:id', getXibit);
+router.get('/xibits/aquariums', getAquariums);
+router.get('/xibits/safaris', getSafaris);
 
 router.get('/plans', getAllPlans);
 router.get('/plans/:id', getPlanById);
