@@ -4,44 +4,52 @@ import db from '../models';
 
 const router = express.Router();
 
-const getXibits = (req, res) => {
-  try {
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-};
-const getXibit = (req, res) => {
-  res.send('Get 1 xibit');
-};
-//https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
+// https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
 
 const BASE_PLACE_URL =
-  'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=';
-const LOCATION = 'UnitedKingdom';
-const FIELDS =
-  '&fields=photos,formatted_address,name,rating,opening_hours&radius=1000';
-let type = '';
-const INPUT_TYPE = '&inputtype=textquery';
-const { API_KEY } = process.env;
+  'https://maps.googleapis.com/maps/api/place/findplacefromtext/json';
+const LOCATION = 'zoo';
+const FIELDS = 'photos,formatted_address,name,rating,opening_hours';
+const INPUT_TYPE = 'textquery';
+const RADIUS = 1000;
+const API_KEY =
+  process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
 
 const getAquariums = async (req, res) => {
-  type = 'aquarium';
-
   try {
-    const { data } = axios.post(
-      `${BASE_PLACE_URL}${type}&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`
-    );
-    res.status(200).json(data);
+    const dataTransform = (placeArray) =>
+      placeArray.map((place) => ({
+        name: place.name,
+        address: place.formatted_address,
+      }));
+
+    const { data } = await axios.get(BASE_PLACE_URL, {
+      params: {
+        input: LOCATION,
+        inputtype: INPUT_TYPE,
+        fields: FIELDS,
+        raduis: RADIUS,
+        key: API_KEY,
+      },
+    });
+    console.log(data);
+    const results = dataTransform(data.candidates);
+
+    res.status(200).json({ results });
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
 const getSafaris = (req, res) => {
-  type = 'safari';
   try {
-    const { data } = axios.post(
-      `${BASE_PLACE_URL}${type}&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`
+    const { data } = axios.get(
+      `${BASE_PLACE_URL}safari&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
     );
     res.status(200).json(data);
   } catch (error) {
@@ -100,8 +108,6 @@ const deletePlan = async (req, res) => {
   }
 };
 
-router.post('/xibits', getXibits);
-router.get('/xibit/:id', getXibit);
 router.get('/xibits/aquariums', getAquariums);
 router.get('/xibits/safaris', getSafaris);
 

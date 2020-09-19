@@ -6,6 +6,7 @@ import db from '../models';
 import { AUTH_SECRET } from '../config/config';
 
 const authenticateUser = async (req, res, next) => {
+  console.log(req.headers);
   try {
     const authorizationHeader = req.headers.authorization;
     const userAuthToken = authorizationHeader.split(' ')[1];
