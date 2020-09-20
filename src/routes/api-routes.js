@@ -6,52 +6,59 @@ const router = express.Router();
 
 // https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
 
-const BASE_PLACE_URL =
-  'https://maps.googleapis.com/maps/api/place/findplacefromtext/json';
-const LOCATION = 'zoo';
-const FIELDS = 'photos,formatted_address,name,rating,opening_hours';
-const INPUT_TYPE = 'textquery';
+const BASE_PLACE_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const API_KEY =
-  process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
+const API_KEY = process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
 
 const getAquariums = async (req, res) => {
+  const QUERY = 'aquarium+in+UnitedKingdom';
+
   try {
-    const dataTransform = (placeArray) =>
-      placeArray.map((place) => ({
-        name: place.name,
-        address: place.formatted_address,
-      }));
+    const dataTransform = (placeArray) => placeArray.map((place) => ({
+      name: place.name,
+      address: place.formatted_address,
+      rating: place.rating,
+      id: place.place_id,
+      photos: place.photos,
+      openingHours: place.opening_hours,
+    }));
 
     const { data } = await axios.get(BASE_PLACE_URL, {
       params: {
-        input: LOCATION,
-        inputtype: INPUT_TYPE,
-        fields: FIELDS,
+        query: QUERY,
         raduis: RADIUS,
         key: API_KEY,
       },
     });
-    console.log(data);
-    const results = dataTransform(data.candidates);
-
-    res.status(200).json({ results });
+    const queryResults = dataTransform(data.results);
+    res.status(200).json({ queryResults });
   } catch (error) {
     res.status(500).send(error.message);
   }
 };
 
-const getSafaris = (req, res) => {
+const getSafaris = async (req, res) => {
+  const QUERY = 'safari+in+UnitedKingdom';
+
   try {
-    const { data } = axios.get(
-      `${BASE_PLACE_URL}safari&${LOCATION}${INPUT_TYPE}${FIELDS}&key=${API_KEY}`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    res.status(200).json(data);
+    const dataTransform = (placeArray) => placeArray.map((place) => ({
+      name: place.name,
+      address: place.formatted_address,
+      rating: place.rating,
+      id: place.place_id,
+      photos: place.photos,
+      openingHours: place.opening_hours,
+    }));
+
+    const { data } = await axios.get(BASE_PLACE_URL, {
+      params: {
+        query: QUERY,
+        raduis: RADIUS,
+        key: API_KEY,
+      },
+    });
+    const queryResults = dataTransform(data.results);
+    res.status(200).json({ queryResults });
   } catch (error) {
     res.status(500).send(error.message);
   }
