@@ -9,8 +9,7 @@ const router = express.Router();
 const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const API_KEY =
-  process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
+const { API_KEY } = process.env.API_KEY;
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
@@ -73,7 +72,6 @@ const getSafaris = async (req, res) => {
 const getAllPlans = async (req, res) => {
   try {
     const { id } = req.user;
-    console.log(id);
     const data = await db.Plan.find({ userId: id });
     res.status(200).json(data);
   } catch (error) {
@@ -107,6 +105,11 @@ const updatePlan = async (req, res) => {
     const { id } = req.params;
     const content = req.body;
     const data = await db.Plan.findByIdAndUpdate(id, content, { upsert: true });
+    /*
+    const model = model.findById(id)
+model.stuff.push(newObject)
+await model.save()
+*/
     res.status(200).json(data);
   } catch (error) {
     res.status(500).send({ error: error.message });
