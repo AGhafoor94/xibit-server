@@ -9,7 +9,7 @@ const router = express.Router();
 const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const { API_KEY } = process.env.API_KEY;
+const { API_KEY } = process.env;
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
