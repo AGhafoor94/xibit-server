@@ -6,22 +6,25 @@ const router = express.Router();
 
 // https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
 
-const BASE_PLACE_URL = 'https://maps.googleapis.com/maps/api/place/textsearch/json';
+const BASE_PLACE_URL =
+  'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const API_KEY = process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
+const API_KEY =
+  process.env.API_KEY || 'AIzaSyB2VpoZkMcQbJjNcmvcVuUIJ45-egrzbOg';
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
 
   try {
-    const dataTransform = (placeArray) => placeArray.map((place) => ({
-      name: place.name,
-      address: place.formatted_address,
-      rating: place.rating,
-      id: place.place_id,
-      photos: place.photos,
-      openingHours: place.opening_hours,
-    }));
+    const dataTransform = (placeArray) =>
+      placeArray.map((place) => ({
+        name: place.name,
+        address: place.formatted_address,
+        rating: place.rating,
+        id: place.place_id,
+        photos: place.photos,
+        openingHours: place.opening_hours,
+      }));
 
     const { data } = await axios.get(BASE_PLACE_URL, {
       params: {
@@ -41,14 +44,15 @@ const getSafaris = async (req, res) => {
   const QUERY = 'safari+in+UnitedKingdom';
 
   try {
-    const dataTransform = (placeArray) => placeArray.map((place) => ({
-      name: place.name,
-      address: place.formatted_address,
-      rating: place.rating,
-      id: place.place_id,
-      photos: place.photos,
-      openingHours: place.opening_hours,
-    }));
+    const dataTransform = (placeArray) =>
+      placeArray.map((place) => ({
+        name: place.name,
+        address: place.formatted_address,
+        rating: place.rating,
+        id: place.place_id,
+        photos: place.photos,
+        openingHours: place.opening_hours,
+      }));
 
     const { data } = await axios.get(BASE_PLACE_URL, {
       params: {
@@ -57,7 +61,9 @@ const getSafaris = async (req, res) => {
         key: API_KEY,
       },
     });
+
     const queryResults = dataTransform(data.results);
+    console.log(queryResults);
     res.status(200).json({ queryResults });
   } catch (error) {
     res.status(500).send(error.message);
@@ -67,6 +73,7 @@ const getSafaris = async (req, res) => {
 const getAllPlans = async (req, res) => {
   try {
     const { id } = req.user;
+    console.log(id);
     const data = await db.Plan.find({ userId: id });
     res.status(200).json(data);
   } catch (error) {
@@ -87,7 +94,8 @@ const getPlanById = async (req, res) => {
 const addPlans = async (req, res) => {
   try {
     const content = req.body;
-    const data = await db.Plan.create(content);
+    const { id } = req.user;
+    const data = await db.Plan.create({ ...content, userId: id });
     res.status(201).json(data);
   } catch (error) {
     res.status(500).send({ error: error.message });
