@@ -8,7 +8,7 @@ const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
 const API_KEY =
-  process.env.API_KEY || 'AIzaSyB2lckzRgh7O7lBDBEVCDFWMywjPkTUJF0';
+  process.env.API_KEY || '';
 const PHOTO_BASE_URL = 'https://maps.googleapis.com/maps/api/place/photo';
 
 const getAquariums = async (req, res) => {
