@@ -4,12 +4,12 @@ import db from '../models';
 
 const router = express.Router();
 
-// https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=zoo&UnitedKingdom&fields=photos,formatted_address,name,rating,opening_hours&radius=1000&inputtype=textquery&key=
-
 const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const { API_KEY } = process.env;
+const API_KEY =
+  process.env.API_KEY || 'AIzaSyB2lckzRgh7O7lBDBEVCDFWMywjPkTUJF0';
+const PHOTO_BASE_URL = 'https://maps.googleapis.com/maps/api/place/photo';
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
@@ -33,6 +33,7 @@ const getAquariums = async (req, res) => {
       },
     });
     const queryResults = dataTransform(data.results);
+
     res.status(200).json({ queryResults });
   } catch (error) {
     res.status(500).send(error.message);
@@ -62,8 +63,55 @@ const getSafaris = async (req, res) => {
     });
 
     const queryResults = dataTransform(data.results);
-    console.log(queryResults);
     res.status(200).json({ queryResults });
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const searchXibit = async (req, res) => {
+  try {
+    const { type, search } = req.params;
+    console.log(type);
+    console.log(search);
+
+    if (type === 'zoo') {
+      const { data } = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json`,
+        {
+          params: {
+            input: type,
+            inputtype: 'textquery',
+            raduis: RADIUS,
+            key: API_KEY,
+          },
+        }
+      );
+      res.status(200).json(data);
+    } else {
+      const result = await axios.get(
+        `https://api.postcodes.io/postcodes/${search}`
+      );
+      console.log(result);
+      const lat = result.latitude;
+      const lng = result.longitude;
+      const { data } = await axios.get(
+        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${type}&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:${lat},${lng}&key=${API_KEY}`
+      );
+      res.status(200).json(data);
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const getXibit = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${id}&key=${API_KEY}`
+    );
+    res.status(200).json(data);
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -104,13 +152,15 @@ const updatePlan = async (req, res) => {
   try {
     const { id } = req.params;
     const content = req.body;
-    const data = await db.Plan.findByIdAndUpdate(id, content, { upsert: true });
-    /*
-    const model = model.findById(id)
-model.stuff.push(newObject)
-await model.save()
-*/
-    res.status(200).json(data);
+
+    const model = await db.Plan.findById(id);
+    model.xibits.push(content);
+    const newData = await model.save();
+
+    res.status(200).json({
+      success: true,
+      newData,
+    });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -128,6 +178,9 @@ const deletePlan = async (req, res) => {
 
 router.get('/xibits/aquariums', getAquariums);
 router.get('/xibits/safaris', getSafaris);
+
+router.get('/xibit/:id', getXibit);
+router.get('/xibit/:type/search/:search', searchXibit);
 
 router.get('/plans', getAllPlans);
 router.get('/plans/:id', getPlanById);
