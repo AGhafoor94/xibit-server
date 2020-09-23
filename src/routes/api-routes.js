@@ -9,7 +9,6 @@ const BASE_PLACE_URL =
 const RADIUS = 1000;
 const API_KEY =
   process.env.API_KEY || 'AIzaSyB2lckzRgh7O7lBDBEVCDFWMywjPkTUJF0';
-const PHOTO_BASE_URL = 'https://maps.googleapis.com/maps/api/place/photo';
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
@@ -63,45 +62,53 @@ const getSafaris = async (req, res) => {
     });
 
     const queryResults = dataTransform(data.results);
-    res.status(200).json({ queryResults });
+    res.status(200).json({ success: true, queryResults });
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).send({
+      success: false,
+      error: error.message,
+    });
   }
 };
 
 const searchXibit = async (req, res) => {
   try {
     const { type, search } = req.params;
-    console.log(type);
-    console.log(search);
 
-    if (type === 'zoo') {
+    if (type === 'safari' || type === 'aquarium') {
       const { data } = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json`,
-        {
-          params: {
-            input: type,
-            inputtype: 'textquery',
-            raduis: RADIUS,
-            key: API_KEY,
-          },
-        }
+        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${type}%20${search}&inputtype=textquery&fields=formatted_address,name,opening_hours,rating,geometry&key=${API_KEY}`
       );
-      res.status(200).json(data);
+      const { lat } = data.candidates[0].geometry.location;
+      const { lng } = data.candidates[0].geometry.location;
+      res.status(200).json({
+        success: true,
+        data,
+        lat,
+        lng,
+      });
     } else {
       const result = await axios.get(
         `https://api.postcodes.io/postcodes/${search}`
       );
-      console.log(result);
       const lat = result.latitude;
       const lng = result.longitude;
+
       const { data } = await axios.get(
-        `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${type}&inputtype=textquery&fields=photos,formatted_address,name,opening_hours,rating&locationbias=circle:${lat},${lng}&key=${API_KEY}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${lat},${lng}&radius=1500&key=${API_KEY}`
       );
-      res.status(200).json(data);
+      res.status(200).json({
+        success: true,
+        data,
+        lat,
+        lng,
+      });
     }
   } catch (error) {
-    res.status(500).send(error.message);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
   }
 };
 
