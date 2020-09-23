@@ -8,7 +8,12 @@ const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
 const API_KEY =
+<<<<<<< HEAD
   process.env.API_KEY || 'AIzaSyB2lckzRgh7O7lBDBEVCDFWMywjPkTUJF0';
+=======
+  process.env.API_KEY || '';
+const PHOTO_BASE_URL = 'https://maps.googleapis.com/maps/api/place/photo';
+>>>>>>> 81372436c27be3b3ac51a8c44d6840fe3e6d5a1e
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
