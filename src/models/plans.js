@@ -13,6 +13,9 @@ const schema = new Schema({
         type: String,
         required: true,
       },
+      index: {
+        type: Number,
+      },
       name: {
         type: String,
         required: true,
