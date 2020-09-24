@@ -9,8 +9,24 @@ const schema = new Schema({
   },
   xibits: [
     {
-      type: Schema.Types.ObjectId,
-      ref: 'xibits',
+      placeId: {
+        type: String,
+        required: true,
+      },
+      index: {
+        type: Number,
+      },
+      name: {
+        type: String,
+        required: true,
+      },
+      address: {
+        type: String,
+        required: true,
+      },
+      createdAt: {
+        type: Date,
+      },
     },
   ],
   createdAt: {

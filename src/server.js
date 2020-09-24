@@ -15,8 +15,10 @@ app.use(express.json());
 app.use(cors());
 
 // routes
+
 app.use('/auth', userAuth);
 // Free routes will go here e.g. html routes
+
 // Authenticate users here
 app.use('/api', authenticateUser, apiRoutes);
 
