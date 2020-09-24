@@ -7,7 +7,8 @@ const router = express.Router();
 const BASE_PLACE_URL =
   'https://maps.googleapis.com/maps/api/place/textsearch/json';
 const RADIUS = 1000;
-const API_KEY = process.env.API_KEY || '';
+const API_KEY =
+  process.env.API_KEY || 'AIzaSyC_TueoLvoTP6Kahu6jEeGz6uGgLpBGCp8';
 
 const getAquariums = async (req, res) => {
   const QUERY = 'aquarium+in+UnitedKingdom';
@@ -111,13 +112,28 @@ const searchXibit = async (req, res) => {
   }
 };
 
+const getApiKey = (req, res) => {
+  try {
+    const key = API_KEY;
+    res.status(200).json(key);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
 const getXibit = async (req, res) => {
   const { id } = req.params;
   try {
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${id}&key=${API_KEY}`
     );
-    res.status(200).json(data);
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -127,7 +143,10 @@ const getAllPlans = async (req, res) => {
   try {
     const { id } = req.user;
     const data = await db.Plan.find({ userId: id });
-    res.status(200).json(data);
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -137,7 +156,10 @@ const getPlanById = async (req, res) => {
   try {
     const { id } = req.params;
     const data = await db.Plan.findById(id);
-    res.status(200).json(data);
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -148,7 +170,10 @@ const addPlans = async (req, res) => {
     const content = req.body;
     const { id } = req.user;
     const data = await db.Plan.create({ ...content, userId: id });
-    res.status(201).json(data);
+    res.status(201).json({
+      success: true,
+      data,
+    });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -176,7 +201,10 @@ const deletePlan = async (req, res) => {
   try {
     const { id } = req.params;
     const data = await db.Plan.findByIdAndDelete(id);
-    res.status(200).json(data);
+    res.status(200).json({
+      success: true,
+      data,
+    });
   } catch (error) {
     res.status(500).send({ error: error.message });
   }
@@ -187,7 +215,7 @@ router.get('/xibits/safaris', getSafaris);
 
 router.get('/xibit/:id', getXibit);
 router.get('/xibit/:type/search/:search', searchXibit);
-
+router.get('/key', getApiKey);
 router.get('/plans', getAllPlans);
 router.get('/plans/:id', getPlanById);
 router.post('/plans', addPlans);
